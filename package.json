@@ -1,0 +1,23 @@
+{
+  "name": "IndexedDB-Learn",
+  "version": "1.0.0",
+  "description": "Learning how to use the browser client DB, IndexedDB through Dexie.js library.",
+  "main": "db.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ben-howard-55/IndexedDB-Learn.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ben-howard-55/IndexedDB-Learn/issues"
+  },
+  "homepage": "https://github.com/ben-howard-55/IndexedDB-Learn#readme",
+  "dependencies": {
+    "dexie": "^3.0.3"
+  }
+}
