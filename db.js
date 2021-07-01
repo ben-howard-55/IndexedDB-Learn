@@ -3,12 +3,14 @@ import Dexie from 'dexie';
 const db_name = 'fc-demo';
 let db = new Dexie(db_name)
 
+let deck = []
+
 db.version(1).stores({
     // Only need to define schema of indexes and primary key
     userWords: '++id,level,front,back'
 })
 
-async function test() {
+async function loadDB() {
     // open the db
     db.open()
 
@@ -26,14 +28,33 @@ async function test() {
             });
         }
         db.userWords.bulkAdd(questions)
-
-        // show first word
-        text.innerHTML = "What is the translation of: " +  front[0];
     });
 }
 
+async function loadDeck() {
+    // read DB for cards
+    var res = await db.userWords.get(1);
+    console.log(res);
+
+    db.userWords.toCollection().count(function (count) {
+        console.log("number of words: " + count);
+    })
+
+    await db.userWords.toCollection().toArray(function (array) {
+        deck = array;
+        console.log(array);
+    })
+    console.log(deck)
+    // show first word
+    text.innerHTML = "What is the translation of: " +  deck[0].front;
+}
 
 
-test().catch (err => {
-    console.error ("Uh oh! " + err.stack);
+// load
+loadDB().then(
+    // once loaded send to srl logic
+    loadDeck()
+    
+).catch (err => {
+    console.error ("error: " + err.stack);
 });
