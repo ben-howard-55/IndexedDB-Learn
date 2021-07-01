@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Localbase Vanilla</title>
+    </head>
+    <body>
+        <h1>FC Example</h1>
+
+        <div id='text'>Text</div>
+        <br>
+        <p>Press to flip card</p>
+        <button id="flip">Flip</button>
+        <br>
+        <br>
+        <p>Did you know it?</p>
+        <button id="bad">I didn't</button>
+        <button id="good">I Knew it</button>
+        <br>
+        <br>
+        <p>Reset Cards</p>
+        <button id="reset">Reset</button>
+
+        
+
+        <script src="https://unpkg.com/dexie@latest/dist/dexie.js"></script>
+
+        <script>
+            const db_name = 'fc-demo';
+            let db = new Dexie(db_name)
+
+            db.version(1).stores({
+                // Only need to define schema of indexes and primary key
+                userWords: '++id,level,front,back'
+            })
+            
+            // open the db
+            db.open()
+
+            // if created for first time populate data
+            db.on("populate", () => {
+                let front = ['Hello', 'Dog', 'Cat', 'Yes', 'No'];
+                let back = ['Hallo', 'Hund', 'Katze', 'Ja', 'Nein'];
+
+                let questions = [];
+                for (let i = 0; i < 5; i++) {
+                    questions.push({
+                        level: Math.floor(Math.random() * 6) + 1,
+                        front: front[i],
+                        back: back[i]
+                    });
+                }
+                db.userWords.bulkAdd(questions)
+
+                // show first word
+                text.innerHTML = "What is the translation of: " front[0];
+            });
+        </script>
+    </body>
+</html>
